@@ -25,7 +25,7 @@
 ## 🚀 使用方法
 
 ### 在线体验
-直接访问 [GitHub Pages](https://yviscool.github.io/digital-puzzle) 即可在线体验。
+直接访问 [digital-puzzle](https://digital-puzzle.vercel.app/) 即可在线体验。
 
 ### 本地运行
 1. 克隆项目到本地：
