@@ -1,14 +1,10 @@
-以下是针对 `digital-puzzle` 项目的 `README.md` 文件内容，涵盖了项目简介、功能特点、使用方法、技术栈和贡献指南等。
+# 数字华容道 - klotski
 
----
-
-# 数字华容道 - Digital Puzzle
-
-![GitHub](https://img.shields.io/badge/license-MIT-blue) ![GitHub stars](https://img.shields.io/github/stars/yviscool/digital-puzzle?style=social)
+![GitHub](https://img.shields.io/badge/license-MIT-blue) ![GitHub stars](https://img.shields.io/github/stars/yviscool/klotski?style=social)
 
 **数字华容道** 是一款经典的益智游戏，通过移动数字方块，将它们按顺序排列。本项目使用现代前端技术实现，支持多种难度选择和动态效果，提供流畅的游戏体验。
 
-🌐 **项目地址**: [https://github.com/yviscool/digital-puzzle](https://github.com/yviscool/digital-puzzle)
+🌐 **项目地址**: [https://github.com/yviscool/klotski](https://github.com/yviscool/klotski)
 
 ---
 
@@ -25,16 +21,16 @@
 ## 🚀 使用方法
 
 ### 在线体验
-直接访问 [digital-puzzle](https://digital-puzzle.vercel.app/) 即可在线体验。
+直接访问 [klotski](https://digital-puzzle.vercel.app/) 即可在线体验。
 
 ### 本地运行
 1. 克隆项目到本地：
    ```bash
-   git clone https://github.com/yviscool/digital-puzzle.git
+   git clone https://github.com/yviscool/klotski.git
    ```
 2. 进入项目目录：
    ```bash
-   cd digital-puzzle
+   cd klotski
    ```
 3. 打开 `index.html` 文件即可运行。
 
