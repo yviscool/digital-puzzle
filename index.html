@@ -1,467 +1,499 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>数字华容道</title>
     <style>
-      body {
-        font-family: "Press Start 2P", sans-serif;
-        background: #111;
-        color: #fff;
-        text-align: center;
-        padding: 0;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-      }
+        /* 样式部分保持不变 */
+        body {
+            font-family: "Press Start 2P", sans-serif;
+            background: #111;
+            color: #fff;
+            text-align: center;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-      #title {
-        font-size: 48px;
-        margin-bottom: 20px;
-        font-family: "Poppins", sans-serif;
-        font-weight: 600;
-        color: #fff;
-        text-shadow: 0px 4px 10px rgba(0, 255, 255, 0.7);
-        letter-spacing: 2px;
-        position: relative;
-        display: inline-block;
-      }
+        #title {
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-family: "Poppins", sans-serif;
+            font-weight: 600;
+            color: #fff;
+            text-shadow: 0px 4px 10px rgba(0, 255, 255, 0.7);
+            letter-spacing: 2px;
+            position: relative;
+            display: inline-block;
+        }
 
-      #title::after {
-        content: "";
-        position: absolute;
-        left: 0;
-        bottom: -10px;
-        width: 100%;
-        height: 4px;
-        background: linear-gradient(90deg, #00ccff, #0066ff);
-        border-radius: 2px;
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: transform 0.3s ease;
-      }
+        #title::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #00ccff, #0066ff);
+            border-radius: 2px;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
 
-      #title:hover::after {
-        transform: scaleX(1);
-      }
+        #title:hover::after {
+            transform: scaleX(1);
+        }
 
-      #puzzle {
-        display: grid;
-        gap: 5px;
-        background: rgba(255, 255, 255, 0.1);
-        padding: 10px;
-        border-radius: 15px;
-        box-shadow: 0px 0px 10px rgba(0, 255, 255, 0.7);
-      }
+        #puzzle {
+            display: grid;
+            gap: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 15px;
+            box-shadow: 0px 0px 10px rgba(0, 255, 255, 0.7);
+        }
 
-      .tile {
-        width: 60px;
-        height: 60px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 24px;
-        font-weight: bold;
-        color: #fff;
-        background: linear-gradient(135deg, #0066ff, #00ccff);
-        border-radius: 5px;
-        box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.4);
-        cursor: pointer;
-        transition: transform 0.2s, box-shadow 0.2s;
-      }
+        .tile {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(135deg, #0066ff, #00ccff);
+            border-radius: 5px;
+            box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
 
-      .tile:hover {
-        transform: scale(1.1);
-        box-shadow: 0px 8px 12px rgba(0, 255, 255, 0.5);
-      }
+        .tile:hover {
+            transform: scale(1.1);
+            box-shadow: 0px 8px 12px rgba(0, 255, 255, 0.5);
+        }
 
-      .hidden {
-        background: transparent;
-        box-shadow: none;
-        cursor: default;
-      }
+        .hidden {
+            background: transparent;
+            box-shadow: none;
+            cursor: default;
+        }
 
-      .panel {
-        margin-bottom: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
+        .panel {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-      .button {
-        background: linear-gradient(135deg, #ff0099, #ff66cc);
-        border: none;
-        padding: 10px 20px;
-        color: #fff;
-        font-size: 14px;
-        font-family: inherit;
-        cursor: pointer;
-        border-radius: 5px;
-        transition: all 0.2s;
-      }
+        .button {
+            background: linear-gradient(135deg, #ff0099, #ff66cc);
+            border: none;
+            padding: 10px 20px;
+            color: #fff;
+            font-size: 14px;
+            font-family: inherit;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.2s;
+        }
 
-      .button:hover {
-        transform: scale(1.05);
-        box-shadow: 0px 4px 10px rgba(255, 0, 153, 0.5);
-      }
+        .button:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 4px 10px rgba(255, 0, 153, 0.5);
+        }
 
-      #size-selector {
-        appearance: none;
-        background: linear-gradient(135deg, #44cc44, #88ff88);
-        border: none;
-        padding: 10px 15px;
-        color: #fff;
-        font-size: 14px;
-        font-family: inherit;
-        cursor: pointer;
-        border-radius: 5px;
-        transition: all 0.2s;
-      }
+        #size-selector {
+            appearance: none;
+            background: linear-gradient(135deg, #44cc44, #88ff88);
+            border: none;
+            padding: 10px 15px;
+            color: #fff;
+            font-size: 14px;
+            font-family: inherit;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.2s;
+        }
 
-      #size-selector:hover {
-        transform: scale(1.05);
-        box-shadow: 0px 4px 10px rgba(68, 204, 68, 0.5);
-      }
+        #size-selector:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 4px 10px rgba(68, 204, 68, 0.5);
+        }
 
-      /* 下拉选项样式 */
-      #size-selector option {
-        background: #111; /* 下拉选项背景色 */
-        color: #fff; /* 下拉选项文字颜色 */
-      }
+        #size-selector option {
+            background: #111;
+            color: #fff;
+        }
 
-      #fireworks {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: 999;
-      }
+        #fireworks {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
     </style>
-    <!-- Pixel字体 -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.11.1/tsparticles.bundle.min.js"></script>
-    <!-- 在 <head> 中添加 SweetAlert2 的 CSS 和 JS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"
-      rel="stylesheet"
-    />
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  </head>
+</head>
 
-  <body>
+<body>
     <h1 id="title">数字华容道</h1>
     <div class="panel">
-      <!-- 配置行列的下拉选择框和按钮在一行显示 -->
-      <div
-        style="
+        <div style="
           display: flex;
           gap: 10px;
           justify-content: center;
           align-items: center;
-        "
-      >
-        <select id="size-selector" onchange="changeSize()">
-          <option value="3x3" selected>3 x 3</option>
-          <option value="2x3">2 x 3</option>
-          <option value="4x4">4 x 4</option>
-          <option value="5x5">5 x 5</option>
-          <option value="6x6">6 x 6</option>
-          <option value="7x7">7 x 7</option>
-          <option value="8x8">8 x 8</option>
-          <option value="9x9">9 x 9</option>
-        </select>
-        <button class="button" onclick="startGame()">重置游戏</button>
-      </div>
-      <p id="timer">计时: 0s</p>
-      <p id="steps">步数: 0</p>
+        ">
+            <select id="size-selector">
+                <option value="3x3" selected>3 x 3</option>
+                <option value="2x3">2 x 3</option>
+                <option value="4x4">4 x 4</option>
+                <option value="5x5">5 x 5</option>
+                <option value="6x6">6 x 6</option>
+                <option value="7x7">7 x 7</option>
+                <option value="8x8">8 x 8</option>
+                <option value="9x9">9 x 9</option>
+            </select>
+            <button class="button" id="reset-button">重置游戏</button>
+        </div>
+        <p id="timer">计时: 0s</p>
+        <p id="steps">步数: 0</p>
     </div>
     <div id="puzzle"></div>
     <canvas id="fireworks"></canvas>
 
     <script>
-      let rows = 3,
-        cols = 3; // 默认华容道尺寸
-      let emptyRow, emptyCol;
-      let moves = 0;
-      let timer;
-      let seconds = 0;
-      const sound = new Audio("https://cdn.freesound.org/sounds/684/684505-00089401-e5e6-40d2-82bb-44e5db70a30f?filename=684505__saha213131__click.mp3"); // 移动音效
+        class PuzzleGame {
+            constructor() {
+                this.rows = 3; // 默认行数
+                this.cols = 3; // 默认列数
+                this.emptyRow = null; // 空白块的行
+                this.emptyCol = null; // 空白块的列
+                this.moves = 0; // 移动步数
+                this.seconds = 0; // 计时器
+                this.timer = null; // 计时器对象
+                this.sound = new Audio(
+                    "https://cdn.freesound.org/sounds/684/684505-00089401-e5e6-40d2-82bb-44e5db70a30f?filename=684505__saha213131__click.mp3"
+                ); // 点击音效
 
-      // 游戏启动函数
-      function startGame() {
-        clearInterval(timer);
-        seconds = 0;
-        moves = 0;
-        document.getElementById("timer").innerText = `计时: ${seconds}s`;
-        document.getElementById("steps").innerText = `步数: ${moves}`;
+                // 绑定事件
+                document.getElementById("size-selector").addEventListener("change", () => this.changeSize());
+                document.getElementById("reset-button").addEventListener("click", () => this.startGame());
 
-        const puzzle = document.getElementById("puzzle");
-        puzzle.innerHTML = "";
-        puzzle.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
-        puzzle.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-
-        const numbers = Array.from(
-          { length: rows * cols - 1 },
-          (_, i) => i + 1
-        );
-        numbers.push(null);
-
-        shuffle(numbers);
-
-        for (let i = 0; i < rows; i++) {
-          for (let j = 0; j < cols; j++) {
-            const value = numbers[i * cols + j];
-            const tile = document.createElement("div");
-            tile.className = "tile";
-            if (value) {
-              tile.innerText = value;
-            } else {
-              emptyRow = i;
-              emptyCol = j;
-              tile.classList.add("hidden");
+                // 初始化游戏
+                this.startGame();
             }
-            tile.addEventListener("click", () => moveTile(i, j));
-            puzzle.appendChild(tile);
-          }
+
+            // 计算逆序数
+            countInversions(arr) {
+                let inversions = 0;
+                for (let i = 0; i < arr.length; i++) {
+                    for (let j = i + 1; j < arr.length; j++) {
+                        if (arr[i] && arr[j] && arr[i] > arr[j]) {
+                            inversions++;
+                        }
+                    }
+                }
+                return inversions;
+            }
+
+            // 检查拼图是否可解
+            isSolvable(numbers, rows, cols) {
+                const inversions = this.countInversions(numbers);
+                if (cols % 2 === 1) {
+                    // 列数为奇数时，逆序数必须为偶数
+                    return inversions % 2 === 0;
+                } else {
+                    // 列数为偶数时，逆序数 + 空白行从底部算起的行数的奇偶性必须为偶数
+                    const blankIndex = numbers.indexOf(null);
+                    const blankRowFromBottom = rows - Math.floor(blankIndex / cols) - 1;
+                    return (inversions + blankRowFromBottom) % 2 === 0;
+                }
+            }
+
+            // 打乱数组并确保可解
+            shuffle(numbers, rows, cols) {
+                do {
+                    for (let i = numbers.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
+                    }
+                } while (!this.isSolvable(numbers, rows, cols));
+            }
+
+            // 游戏启动函数
+            startGame() {
+                clearInterval(this.timer);
+                this.seconds = 0;
+                this.moves = 0;
+                document.getElementById("timer").innerText = `计时: ${this.seconds}s`;
+                document.getElementById("steps").innerText = `步数: ${this.moves}`;
+
+                const puzzle = document.getElementById("puzzle");
+                puzzle.innerHTML = "";
+                puzzle.style.gridTemplateRows = `repeat(${this.rows}, 1fr)`;
+                puzzle.style.gridTemplateColumns = `repeat(${this.cols}, 1fr)`;
+
+                const numbers = Array.from(
+                    { length: this.rows * this.cols - 1 },
+                    (_, i) => i + 1
+                );
+                numbers.push(null);
+
+                this.shuffle(numbers, this.rows, this.cols);
+
+                for (let i = 0; i < this.rows; i++) {
+                    for (let j = 0; j < this.cols; j++) {
+                        const value = numbers[i * this.cols + j];
+                        const tile = document.createElement("div");
+                        tile.className = "tile";
+                        if (value) {
+                            tile.innerText = value;
+                        } else {
+                            this.emptyRow = i;
+                            this.emptyCol = j;
+                            tile.classList.add("hidden");
+                        }
+                        tile.addEventListener("click", () => this.moveTile(i, j));
+                        puzzle.appendChild(tile);
+                    }
+                }
+
+                this.timer = setInterval(() => {
+                    this.seconds++;
+                    document.getElementById("timer").innerText = `计时: ${this.seconds}s`;
+                }, 1000);
+            }
+
+            // 改变华容道尺寸
+            changeSize() {
+                const size = document.getElementById("size-selector").value.split("x");
+                this.rows = parseInt(size[0], 10);
+                this.cols = parseInt(size[1], 10);
+                this.startGame();
+            }
+
+            // 移动拼图块
+            moveTile(row, col) {
+                const distance = Math.abs(row - this.emptyRow) + Math.abs(col - this.emptyCol);
+                if (distance !== 1) return;
+
+                this.sound.play();
+
+                const puzzle = document.getElementById("puzzle");
+                const tiles = puzzle.children;
+                const clickedTile = tiles[row * this.cols + col];
+
+                tiles[this.emptyRow * this.cols + this.emptyCol].classList.remove("hidden");
+                tiles[this.emptyRow * this.cols + this.emptyCol].innerText = clickedTile.innerText;
+                clickedTile.classList.add("hidden");
+                clickedTile.innerText = "";
+
+                this.emptyRow = row;
+                this.emptyCol = col;
+
+                this.moves++;
+                document.getElementById("steps").innerText = `步数: ${this.moves}`;
+
+                this.checkWin();
+            }
+
+            // 检查是否完成
+            checkWin() {
+                const puzzle = document.getElementById("puzzle");
+                const tiles = puzzle.children;
+
+                for (let i = 0; i < tiles.length - 1; i++) {
+                    const row = Math.floor(i / this.cols);
+                    const col = i % this.cols;
+
+                    if (tiles[row * this.cols + col].innerText !== String(i + 1)) {
+                        return;
+                    }
+                }
+
+                clearInterval(this.timer);
+
+                Swal.fire({
+                    title: "恭喜！",
+                    text: `你用 ${this.seconds} 秒完成游戏，步数为 ${this.moves}！`,
+                    icon: "success",
+                    confirmButtonText: "再来一局",
+                    background: "#1e1e1e",
+                    color: "#fff",
+                    confirmButtonColor: "#00ccff",
+                    customClass: {
+                        popup: "sweet-popup",
+                        title: "sweet-title",
+                        confirmButton: "sweet-confirm-button",
+                    },
+                    showCloseButton: true,
+                    focusConfirm: false,
+                    backdrop: "rgba(0, 0, 0, 0.7)",
+                    padding: "2rem",
+                    borderRadius: "10px",
+                    boxShadow: "0px 0px 20px rgba(0, 255, 255, 0.5)",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.startGame();
+                    }
+                });
+
+                this.showFireworks();
+            }
+
+            // 显示烟花效果
+            showFireworks() {
+                tsParticles.load({
+                    id: "tsparticles",
+                    options: {
+                        fullScreen: {
+                            zIndex: 1,
+                        },
+                        particles: {
+                            number: {
+                                value: 0,
+                            },
+                            color: {
+                                value: ["#00FFFC", "#FC00FF", "#fffc00"],
+                            },
+                            shape: {
+                                type: ["circle", "square"],
+                                options: {},
+                            },
+                            opacity: {
+                                value: {
+                                    min: 0,
+                                    max: 1,
+                                },
+                                animation: {
+                                    enable: true,
+                                    speed: 2,
+                                    startValue: "max",
+                                    destroy: "min",
+                                },
+                            },
+                            size: {
+                                value: {
+                                    min: 2,
+                                    max: 4,
+                                },
+                            },
+                            links: {
+                                enable: false,
+                            },
+                            life: {
+                                duration: {
+                                    sync: true,
+                                    value: 5,
+                                },
+                                count: 1,
+                            },
+                            move: {
+                                enable: true,
+                                gravity: {
+                                    enable: true,
+                                    acceleration: 10,
+                                },
+                                speed: {
+                                    min: 10,
+                                    max: 20,
+                                },
+                                decay: 0.1,
+                                direction: "none",
+                                straight: false,
+                                outModes: {
+                                    default: "destroy",
+                                    top: "none",
+                                },
+                            },
+                            rotate: {
+                                value: {
+                                    min: 0,
+                                    max: 360,
+                                },
+                                direction: "random",
+                                move: true,
+                                animation: {
+                                    enable: true,
+                                    speed: 60,
+                                },
+                            },
+                            tilt: {
+                                direction: "random",
+                                enable: true,
+                                move: true,
+                                value: {
+                                    min: 0,
+                                    max: 360,
+                                },
+                                animation: {
+                                    enable: true,
+                                    speed: 60,
+                                },
+                            },
+                            roll: {
+                                darken: {
+                                    enable: true,
+                                    value: 25,
+                                },
+                                enable: true,
+                                speed: {
+                                    min: 15,
+                                    max: 25,
+                                },
+                            },
+                            wobble: {
+                                distance: 30,
+                                enable: true,
+                                move: true,
+                                speed: {
+                                    min: -15,
+                                    max: 15,
+                                },
+                            },
+                        },
+                        emitters: {
+                            life: {
+                                count: 0,
+                                duration: 0.1,
+                                delay: 0.4,
+                            },
+                            rate: {
+                                delay: 0.1,
+                                quantity: 150,
+                            },
+                            size: {
+                                width: 0,
+                                height: 0,
+                            },
+                        },
+                    },
+                });
+                setTimeout(() => {
+                    tsParticles.domItem(0).destroy();
+                }, 6000);
+            }
         }
 
-        timer = setInterval(() => {
-          seconds++;
-          document.getElementById("timer").innerText = `计时: ${seconds}s`;
-        }, 1000);
-      }
-
-      // 改变华容道尺寸
-      function changeSize() {
-        const size = document.getElementById("size-selector").value.split("x");
-        rows = parseInt(size[0], 10);
-        cols = parseInt(size[1], 10);
-        startGame();
-      }
-
-      // 移动瓷砖函数
-      function moveTile(row, col) {
-        const distance = Math.abs(row - emptyRow) + Math.abs(col - emptyCol);
-        if (distance !== 1) return;
-
-        sound.play(); // 播放移动音效
-
-        const puzzle = document.getElementById("puzzle");
-        const tiles = puzzle.children;
-        const clickedTile = tiles[row * cols + col];
-
-        // 交换内容
-        tiles[emptyRow * cols + emptyCol].classList.remove("hidden");
-        tiles[emptyRow * cols + emptyCol].innerText = clickedTile.innerText;
-        clickedTile.classList.add("hidden");
-        clickedTile.innerText = "";
-
-        emptyRow = row;
-        emptyCol = col;
-
-        moves++;
-        document.getElementById("steps").innerText = `步数: ${moves}`;
-
-        checkWin();
-      }
-
-      // 检查是否完成
-      function checkWin() {
-        const puzzle = document.getElementById("puzzle");
-        const tiles = puzzle.children;
-
-        for (let i = 0; i < tiles.length - 1; i++) {
-          const row = Math.floor(i / cols);
-          const col = i % cols;
-
-          if (tiles[row * cols + col].innerText !== String(i + 1)) {
-            return;
-          }
-        }
-
-        clearInterval(timer);
-
-        // 使用 SweetAlert2 美化弹窗
-        Swal.fire({
-          title: "恭喜！",
-          text: `你用 ${seconds} 秒完成游戏，步数为 ${moves}！`,
-          icon: "success",
-          confirmButtonText: "再来一局",
-          background: "#1e1e1e", // 弹窗背景色（比页面背景稍亮）
-          color: "#fff", // 文字颜色
-          confirmButtonColor: "#00ccff", // 按钮颜色
-          customClass: {
-            popup: "sweet-popup",
-            title: "sweet-title",
-            confirmButton: "sweet-confirm-button",
-          },
-          showCloseButton: true, // 显示关闭按钮
-          focusConfirm: false, // 不自动聚焦到确认按钮
-          backdrop: "rgba(0, 0, 0, 0.7)", // 背景遮罩颜色
-          padding: "2rem", // 内边距
-          borderRadius: "10px", // 圆角
-          boxShadow: "0px 0px 20px rgba(0, 255, 255, 0.5)", // 发光效果
-        }).then((result) => {
-          if (result.isConfirmed) {
-            startGame(); // 点击“再来一局”后重新开始游戏
-          }
-        });
-
-        // 显示烟花效果
-        showFireworks();
-      }
-
-      // 打乱数组
-      function shuffle(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [array[i], array[j]] = [array[j], array[i]];
-        }
-      }
-
-      // 显示烟花效果
-      function showFireworks() {
-        tsParticles.load({
-          id: "tsparticles",
-          options: {
-            fullScreen: {
-              zIndex: 1,
-            },
-            particles: {
-              number: {
-                value: 0,
-              },
-              color: {
-                value: ["#00FFFC", "#FC00FF", "#fffc00"],
-              },
-              shape: {
-                type: ["circle", "square"],
-                options: {},
-              },
-              opacity: {
-                value: {
-                  min: 0,
-                  max: 1,
-                },
-                animation: {
-                  enable: true,
-                  speed: 2,
-                  startValue: "max",
-                  destroy: "min",
-                },
-              },
-              size: {
-                value: {
-                  min: 2,
-                  max: 4,
-                },
-              },
-              links: {
-                enable: false,
-              },
-              life: {
-                duration: {
-                  sync: true,
-                  value: 5,
-                },
-                count: 1,
-              },
-              move: {
-                enable: true,
-                gravity: {
-                  enable: true,
-                  acceleration: 10,
-                },
-                speed: {
-                  min: 10,
-                  max: 20,
-                },
-                decay: 0.1,
-                direction: "none",
-                straight: false,
-                outModes: {
-                  default: "destroy",
-                  top: "none",
-                },
-              },
-              rotate: {
-                value: {
-                  min: 0,
-                  max: 360,
-                },
-                direction: "random",
-                move: true,
-                animation: {
-                  enable: true,
-                  speed: 60,
-                },
-              },
-              tilt: {
-                direction: "random",
-                enable: true,
-                move: true,
-                value: {
-                  min: 0,
-                  max: 360,
-                },
-                animation: {
-                  enable: true,
-                  speed: 60,
-                },
-              },
-              roll: {
-                darken: {
-                  enable: true,
-                  value: 25,
-                },
-                enable: true,
-                speed: {
-                  min: 15,
-                  max: 25,
-                },
-              },
-              wobble: {
-                distance: 30,
-                enable: true,
-                move: true,
-                speed: {
-                  min: -15,
-                  max: 15,
-                },
-              },
-            },
-            emitters: {
-              life: {
-                count: 0,
-                duration: 0.1,
-                delay: 0.4,
-              },
-              rate: {
-                delay: 0.1,
-                quantity: 150,
-              },
-              size: {
-                width: 0,
-                height: 0,
-              },
-            },
-          },
-        });
-        setTimeout(() => {
-          tsParticles.domItem(0).destroy();
-        }, 6000);
-      }
-
-      startGame();
+        // 初始化游戏
+        const game = new PuzzleGame();
     </script>
-  </body>
+</body>
+
 </html>
